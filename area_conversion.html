@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Area Converter</title>
+    <link rel="stylesheet" href="converter.css" />
+  </head>
+  <body>
+    <h1>Area Unit Conversion</h1>
+
+    Round output value to a maximum of
+    <select name="num_decimal_places" id="num_decimal_places" onchange="convertArea()">
+      <option value="0">0</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5" selected>5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+    </select>
+    decimal places
+    <br />
+    <br />
+    <input type="text" id="value_input" name="value_input" value="1.0" oninput="convertArea()" onchange="convertArea()" />
+
+    <select name="area_units_input" id="area_units_input" onchange="convertArea()">
+      <option value="millimeter2">millimeter&sup2 (mm&sup2)</option>
+      <option value="centimeter2">centimeter&sup2 (cm&sup2)</option>
+      <option value="decimeter2">decimeter&sup2 (dm&sup2)</option>
+      <option value="meter2">meter&sup2 (m&sup2)</option>
+      <option value="kilometer2">kilometer&sup2 (km&sup2)</option>
+      <option value="inch2">inch&sup2 (in&sup2)</option>
+      <option value="foot2">foot&sup2 (ft&sup2)</option>
+      <option value="yard2">yard&sup2 (yd&sup2)</option>
+      <option value="mile">mile&sup2 (mi&sup2)</option>
+    </select>
+
+    equals
+
+    <br />
+    <br />
+
+    <input type="text" id="value_output" name="value_output" value="" readonly="readonly" />
+
+    <select name="area_units_output" id="area_units_output" onchange="convertArea()">
+      <option value="millimeter2">millimeter&sup2 (mm&sup2)</option>
+      <option value="centimeter2">centimeter&sup2 (cm&sup2)</option>
+      <option value="decimeter2">decimeter&sup2 (dm&sup2)</option>
+      <option value="meter2">meter&sup2 (m&sup2)</option>
+      <option value="kilometer2">kilometer&sup2 (km&sup2)</option>
+      <option value="inch2">inch&sup2 (in&sup2)</option>
+      <option value="foot2">foot&sup2 (ft&sup2)</option>
+      <option value="yard2">yard&sup2 (yd&sup2)</option>
+      <option value="mile2">mile&sup2 (mi&sup2)</option>
+    </select>
+
+    <button onclick="copyText()">Copy</button>
+    <br />
+    <br />
+
+    <script>
+      function convertArea() {
+        var num_decimals = document.getElementById("num_decimal_places").value;
+        var input_num = document.getElementById("value_input").value;
+        var unit_in = document.getElementById("area_units_input").value;
+        var unit_out = document.getElementById("area_units_output").value;
+
+        switch (unit_in) {
+          case "millimeter2":
+            in_unit_to_meter = 0.000001;
+            break;
+          case "centimeter2":
+            in_unit_to_meter = 0.0001;
+            break;
+          case "decimeter2":
+            in_unit_to_meter = 0.01;
+            break;
+          case "meter2":
+            in_unit_to_meter = 1.0;
+            break;
+          case "kilometer2":
+            in_unit_to_meter = 1000000;
+            break;
+          case "inch2":
+            in_unit_to_meter = 0.00064516;
+            break;
+          case "foot2":
+            in_unit_to_meter = 0.09290304;
+            break;
+          case "yard2":
+            in_unit_to_meter = 0.83612736;
+            break;
+          case "mile2":
+            in_unit_to_meter = 2589988.109999999;
+            break;
+        }
+
+        switch (unit_out) {
+          case "millimeter2":
+            meter_to_out_unit = 1000000;
+            break;
+          case "centimeter2":
+            meter_to_out_unit = 10000;
+            break;
+          case "decimeter2":
+            meter_to_out_unit = 100;
+            break;
+          case "meter2":
+            meter_to_out_unit = 1.0;
+            break;
+          case "kilometer2":
+            meter_to_out_unit = 0.000001;
+            break;
+          case "inch2":
+            meter_to_out_unit = 1550.0031;
+            break;
+          case "foot2":
+            meter_to_out_unit = 10.76391042;
+            break;
+          case "yard2":
+            meter_to_out_unit = 1.195990046;
+            break;
+          case "mile2":
+            meter_to_out_unit = 3097600;
+            break;
+        }
+        var converted_num = input_num * in_unit_to_meter * meter_to_out_unit;
+        // https://stackoverflow.com/questions/11832914/how-to-round-to-at-most-2-decimal-places-if-necessary
+        document.getElementById("value_output").value = Math.round(converted_num * Math.pow(10, num_decimals) + Number.EPSILON) / Math.pow(10, num_decimals);
+      }
+    </script>
+
+    <script>
+      function copyText() {
+        // Based on implementation found here: https://www.w3schools.com/howto/howto_js_copy_clipboard.asp
+        var outputText = document.getElementById("value_output");
+        outputText.select();
+        outputText.setSelectionRange(0, 99999); /* For mobile devices */
+        navigator.clipboard.writeText(outputText.value);
+      }
+    </script>
+  </body>
+</html>
+

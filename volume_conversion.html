@@ -1,0 +1,163 @@
+<html>
+  <head>
+    <title>Volume Converter</title>
+    <link rel="stylesheet" href="converter.css" />
+  </head>
+  <body>
+    <h1>Volume Unit Conversion</h1>
+
+    Round output value to a maximum of
+    <select name="num_decimal_places" id="num_decimal_places" onchange="convertVolume()">
+      <option value="0">0</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5" selected>5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+    </select>
+    decimal places
+    <br />
+    <br />
+    <input type="text" id="value_input" name="value_input" value="1.0" oninput="convertVolume()" onchange="convertVolume()" />
+
+    <select name="volume_units_input" id="volume_units_input" onchange="convertVolume()">
+      <option value="milliliter">milliliter (mL/cm&sup3)</option>
+      <option value="liter">liter (L)</option>
+      <option value="meter3">meter&sup3 (m&sup3)</option>
+      <option value="inch3">inch&sup3 (in&sup3)</option>
+      <option value="foot3">foot&sup3 (ft&sup3)</option>
+      <option value="yard3">yard&sup3 (yd&sup3)</option>
+      <option value="ounce">ounce(oz)</option>
+      <option value="pint">pint(pt)</option>
+      <option value="quart">quart(qt)</option>
+      <option value="gallon">gallon(gal)</option>
+      <option value="barrel">oil barrel(bbl)</option>
+    </select>
+
+    equals
+
+    <br />
+    <br />
+
+    <input type="text" id="value_output" name="value_output" value="" readonly="readonly" />
+
+    <select name="volume_units_output" id="volume_units_output" onchange="convertVolume()">
+      <option value="milliliter">milliliter (mL/cm&sup3)</option>
+      <option value="liter">liter (L)</option>
+      <option value="meter3">meter&sup3 (m&sup3)</option>
+      <option value="inch3">inch&sup3 (in&sup3)</option>
+      <option value="foot3">foot&sup3 (ft&sup3)</option>
+      <option value="yard3">yard&sup3 (yd&sup3)</option>
+      <option value="ounce">ounce(oz)</option>
+      <option value="pint">pint(pt)</option>
+      <option value="quart">quart(qt)</option>
+      <option value="gallon">gallon(gal)</option>
+      <option value="barrel">oil barrel(bbl)</option>
+    </select>
+
+    <button onclick="copyText()">Copy</button>
+    <br />
+    <br />
+
+    <script>
+      function convertVolume() {
+        var num_decimals = document.getElementById("num_decimal_places").value;
+        var input_num = document.getElementById("value_input").value;
+        var unit_in = document.getElementById("volume_units_input").value;
+        var unit_out = document.getElementById("volume_units_output").value;
+
+        switch (unit_in) {
+          case "milliliter":
+            in_unit_to_meter = 0.000001;
+            break;
+          case "liter":
+            in_unit_to_meter = 0.001;
+            break;
+          case "meter3":
+            in_unit_to_meter = 1.0;
+            break;
+          case "inch3":
+            in_unit_to_meter = 0.0000163871;
+            break;
+          case "foot3":
+            in_unit_to_meter = 0.0283168466;
+            break;
+          case "yard3":
+            in_unit_to_meter = 0.764554858;
+            break;
+          case "ounce":
+            in_unit_to_meter = 0.0000295735;
+            break;
+          case "pint":
+            in_unit_to_meter = 0.0004731765;
+            break;
+          case "quart":
+            in_unit_to_meter = 0.0009463529;
+            break;
+          case "gallon":
+            in_unit_to_meter = 0.0037854118;
+            break;
+          case "barrel":
+            in_unit_to_meter = 0.158987296;
+            break;
+        }
+
+        switch (unit_out) {
+          case "milliliter":
+            meter_to_out_unit = 1000000;
+            break;
+          case "liter":
+            meter_to_out_unit = 1000;
+            break;
+          case "meter3":
+            meter_to_out_unit = 1.0;
+            break;
+          case "inch3":
+            meter_to_out_unit = 61023.7440947323;
+            break;
+          case "foot3":
+            meter_to_out_unit = 35.3146667215;
+            break;
+          case "yard3":
+            meter_to_out_unit = 1.3079506193;
+            break;
+          case "ounce":
+            meter_to_out_unit = 33814.0227;
+            break;
+          case "pint":
+            meter_to_out_unit = 2113.3764188652;
+            break;
+          case "quart":
+            meter_to_out_unit = 1056.6882094326;
+            break;
+          case "gallon":
+            meter_to_out_unit = 264.1720523581;
+            break;
+          case "barrel":
+            meter_to_out_unit = 6.28981077;
+            break;
+        }
+        var converted_num = input_num * in_unit_to_meter * meter_to_out_unit;
+        // https://stackoverflow.com/questions/11832914/how-to-round-to-at-most-2-decimal-places-if-necessary
+        document.getElementById("value_output").value = Math.round(converted_num * Math.pow(10, num_decimals) + Number.EPSILON) / Math.pow(10, num_decimals);
+      }
+    </script>
+
+    <script>
+      function copyText() {
+        // Based on implementation found here: https://www.w3schools.com/howto/howto_js_copy_clipboard.asp
+        var outputText = document.getElementById("value_output");
+        outputText.select();
+        outputText.setSelectionRange(0, 99999); /* For mobile devices */
+        navigator.clipboard.writeText(outputText.value);
+      }
+    </script>
+  </body>
+</html>
+
+
